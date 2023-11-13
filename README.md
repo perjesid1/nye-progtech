@@ -1,8 +1,8 @@
 # Programozási technológiák beadandó feladat.
 
-Feladat: Wumplusz parancssoros labirintusjáték implementáció
+Feladat: Wumpusz parancssoros labirintusjáték implementáció
 
-A wumplusz egy egyszemélyes problémamegoldó 2D-táblajáték, aminek jelen feladatban a pályaszerkesztőjét és játékmenetét kell implementálni.
+A wumpusz egy egyszemélyes problémamegoldó 2D-táblajáték, aminek jelen feladatban a pályaszerkesztőjét és játékmenetét kell implementálni.
 
 A program egy felhasználónév bekérésével kezdődik, utána a program egy alapmenüvel folytatódik, amiből lehet lépni pályaszerkesztésbe, fájlból beolvasásba, adatbázisból betöltésbe, adatbázisba mentésbe, játszásba, kilépésbe.
 
