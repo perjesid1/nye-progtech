@@ -5,4 +5,12 @@ public class SaveHandler {
     public SaveHandler(String fileName){
         this.fileName = fileName;
     }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 }

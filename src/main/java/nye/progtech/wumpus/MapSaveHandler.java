@@ -7,25 +7,21 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class MapSaveHandler extends SaveHandler{
-    private String fileName;
     private Map handledMap;
-    public MapSaveHandler(String fileName, Map mapToSave){
-        super(fileName);
-        this.handledMap = mapToSave;
-    }
 
     public MapSaveHandler(){
         super("currentMap");
         this.handledMap = null;
+        File directory = new File("maps");
+        if (! directory.exists())
+            directory.mkdir();
+        directory = new File("import");
+        if (! directory.exists())
+            directory.mkdir();
     }
 
-    public MapSaveHandler(String fileName){
-        super(fileName);
-        this.handledMap = null;
-    }
-
-    public Map loadNewMap() throws IOException{
-        File mapFile = new File("import\\" + fileName + ".txt");
+    public void loadNewMap() throws IOException{
+        File mapFile = new File("import\\" + super.getFileName() + ".txt");
         Scanner mapScanner = new Scanner(mapFile);
         if(mapFile.exists() && !mapFile.isDirectory()){
             try {
@@ -80,12 +76,10 @@ public class MapSaveHandler extends SaveHandler{
                 throw new IOException("Invalid import file!");
             }
         } else throw new FileNotFoundException("Missing import file!");
-
-        return handledMap;
     }
 
-    public Map loadMap() throws IOException{
-        File mapFile = new File("maps\\" + fileName + ".txt");
+    public void loadMap() throws IOException{
+        File mapFile = new File("maps\\" + super.getFileName() + ".txt");
         Scanner mapScanner = new Scanner(mapFile);
         Hero hero = new Hero();
         if(mapFile.exists() && !mapFile.isDirectory()){
@@ -135,7 +129,6 @@ public class MapSaveHandler extends SaveHandler{
                 throw new IOException("Corrupted save file!");
             }
         } else throw new FileNotFoundException("Missing save file!");
-        return this.handledMap;
     }
 
     public void saveMap(String userName) throws IOException{
@@ -178,7 +171,7 @@ public class MapSaveHandler extends SaveHandler{
     }
 
     public void setFileName(String fileName) {
-        this.fileName = fileName;
+        super.setFileName(fileName);
     }
 
     public void removeSavedProgress(String userName){

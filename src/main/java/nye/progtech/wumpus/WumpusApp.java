@@ -1,6 +1,5 @@
 package nye.progtech.wumpus;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.Thread;
 import java.util.*;

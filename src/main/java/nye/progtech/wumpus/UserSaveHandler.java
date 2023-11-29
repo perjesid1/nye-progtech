@@ -6,33 +6,20 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class UserSaveHandler extends SaveHandler{
-    private String fileName;
     private Users allUsers;
     private User currentUser;
 
     public UserSaveHandler(){
         super("users");
-        this.allUsers=null;
+        this.allUsers = new Users();
         this.currentUser=null;
-    }
-
-    public UserSaveHandler(Users allUsers, User currentUser){
-        super("users");
-        this.allUsers = allUsers;
-        this.currentUser = currentUser;
-    }
-
-    public UserSaveHandler(Users allUsers, User currentUser, String fileName){
-        super(fileName);
-        this.allUsers = allUsers;
-        this.currentUser = currentUser;
+        File directory = new File("users");
+        if (! directory.exists())
+            directory.mkdir();
     }
 
     public User getCurrentUser(){
         return this.currentUser;
-    }
-    public User getUserByName(String userName){
-        return this.allUsers.getUserByName(userName);
     }
 
     public void setCurrentUser(String userName){
@@ -45,7 +32,7 @@ public class UserSaveHandler extends SaveHandler{
     }
 
     public void saveAllUsers() throws IOException {
-        File usersFile = new File("users\\" + fileName + ".txt");
+        File usersFile = new File("users\\" + super.getFileName() + ".txt");
         if(usersFile.exists() && !usersFile.isDirectory()){
             usersFile.delete();
         }
@@ -58,7 +45,7 @@ public class UserSaveHandler extends SaveHandler{
     }
 
     public void loadAllUsers() throws IOException{
-        File usersFile = new File("maps\\" + fileName + ".txt");
+        File usersFile = new File("users\\" + super.getFileName() + ".txt");
         Scanner usersScanner = new Scanner(usersFile);
         if(usersFile.exists() && !usersFile.isDirectory()) {
             try {

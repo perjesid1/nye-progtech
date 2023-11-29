@@ -117,4 +117,8 @@ public class Hunt {
             map.getHero().setCurrentRoom(nextRoom);
         }
     }
+
+    public void shootArrow(){}
+
+    public void printMap(){}
 }
