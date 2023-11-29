@@ -2,6 +2,10 @@ package nye.progtech.wumpus;
 
 public class Escape extends Event{
     private boolean canEscape;
+
+    public Escape(){
+        this.canEscape = false;
+    }
     @Override
     public void encounter() {
         if(canEscape)

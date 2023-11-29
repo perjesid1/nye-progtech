@@ -8,6 +8,9 @@ public class Gold extends Event{
         this.found = false;
     }
 
+    public void setFound(boolean found){ this.found = found; }
+    public boolean isFound() { return this.found; }
+
     @Override
     public void encounter() {
         if(!found) {

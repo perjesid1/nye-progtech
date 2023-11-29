@@ -164,4 +164,9 @@ public class Users implements List<User> {
     public User getElement(int index){
         return this.usersList.get(index);
     }
+
+    public User getUserByName(String userName){
+        User user = new User(userName);
+        return this.usersList.get(this.usersList.indexOf(user));
+    }
 }

@@ -64,4 +64,23 @@ public class Hero {
     public void setDirection(Map.directions direction){
         this.direction = direction;
     }
+
+    public char getDirectionAsChar() {
+        char dir = 'N'; //Just in case there is a problem, the default direction is North.
+        switch (this.direction){
+            case E -> dir = 'E';
+            case S -> dir = 'S';
+            case W -> dir = 'W';
+        }
+        return dir;
+    }
+    public void setDirectionAsChar(char directionAsChar) {
+        Map.directions dir  = Map.directions.N; //Just in case there is a problem, the default direction is North.
+        switch (directionAsChar){
+            case 'E' -> dir = Map.directions.E;
+            case 'S' -> dir = Map.directions.S;
+            case 'W' -> dir = Map.directions.W;
+        }
+        this.direction = dir;
+    }
 }

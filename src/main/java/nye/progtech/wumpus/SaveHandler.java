@@ -1,8 +1,8 @@
 package nye.progtech.wumpus;
 
 public class SaveHandler {
-    private String fieName;
+    private String fileName;
     public SaveHandler(String fileName){
-        this.fieName = fileName;
+        this.fileName = fileName;
     }
 }

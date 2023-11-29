@@ -62,4 +62,8 @@ public class Map {
     public void setSize(int size){
         this.size = size;
     }
+
+    public void setRoom(int row, int col, Room room){
+        this.rooms[row][col] = room;
+    }
 }
