@@ -42,8 +42,6 @@ public class WumpusApp{
         }
         if(throwable == null)
             System.out.println("Your pending game has been loaded.");
-
-        clearConsole();
         do {
             sleepFor(1);
             clearConsole();
@@ -148,17 +146,26 @@ public class WumpusApp{
             }
             case "M" -> System.out.println("Not implemented in current version!");
             case "P" -> {
-                clearConsole();
-                System.out.println("You have found the labyrinth where the terrifying monster lives...");
-                System.out.println("You have only one task... And only one chance...");
-                sleepFor(4);
-                clearConsole();
-                greetThePlayer();
-                sleepFor(2);
-                Hunt newGame = new Hunt(users.getCurrentUser().getUserName());
-                if (newGame.run(map)) {
-                    users.getCurrentUser().setHighScore(users.getCurrentUser().getHighScore() + 1);
-                }
+                if(map != null) {
+                    clearConsole();
+                    System.out.println("You have found the labyrinth where the terrifying monster lives...");
+                    System.out.println("You have only one task... And only one chance...");
+                    sleepFor(4);
+                    clearConsole();
+                    greetThePlayer();
+                    sleepFor(2);
+                    Hunt newGame = new Hunt(users.getCurrentUser().getUserName());
+                    if (newGame.run(map)) {
+                        users.getCurrentUser().setHighScore(users.getCurrentUser().getHighScore() + 1);
+                        map = null;
+                        try {
+                            users.saveAllUsers();
+                        }
+                        catch (Exception e){
+                            System.out.println("Unable to save users - corrupted save file.");
+                        }
+                    }
+                }else System.out.println("No map loaded. Please load a map to play the game!");
             }
             case "L" -> {
                 clearConsole();

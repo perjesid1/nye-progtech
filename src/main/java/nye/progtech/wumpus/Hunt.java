@@ -1,5 +1,7 @@
 package nye.progtech.wumpus;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Scanner;
 
 public class Hunt {
@@ -7,11 +9,11 @@ public class Hunt {
     public Hunt(String userName){ this.userName = userName; }
     private boolean success = false;
     private boolean exit = false;
-    public boolean run(MapSaveHandler map){
+    public boolean run(@NotNull MapSaveHandler map){
         Scanner scn = new Scanner(System.in);
         String inputCommand;
         do {
-            showHint(map.getMap());
+            //showHint(map.getMap());
             inputCommand = scn.nextLine();
             if(inputCommand.equalsIgnoreCase("help")){
                 System.out.println("Currently accepted commands:");
@@ -21,11 +23,12 @@ public class Hunt {
                 System.out.println("shoot [E/W/N/S] -> Shoots in the selected direction.");
                 System.out.println("postpone -> Saves the current progress and exits to the main menu.");
                 System.out.println("exit -> Exits to the main menu.");
-            } else if(inputCommand.toUpperCase().endsWith("E") || inputCommand.toUpperCase().endsWith("W") ||
-                    inputCommand.toUpperCase().endsWith("N") || inputCommand.toUpperCase().endsWith("S") ) {
+            } else if(inputCommand.toUpperCase().endsWith(" E") || inputCommand.toUpperCase().endsWith(" W") ||
+                    inputCommand.toUpperCase().endsWith(" N") || inputCommand.toUpperCase().endsWith(" S") ) {
                 if(inputCommand.toUpperCase().startsWith("MOVE ")) {
                     map.getMap().getHero().setDirectionAsChar(inputCommand.toUpperCase().charAt(5));
                     moveHero(map.getMap());
+                    showHint(map.getMap());
                 } else if(inputCommand.toUpperCase().startsWith("SHOOT ")) {
                     if(map.getMap().getHero().getArrows() > 0) {
                         map.getMap().getHero().setDirectionAsChar(inputCommand.toUpperCase().charAt(6));
@@ -33,7 +36,7 @@ public class Hunt {
                     } else {
                         System.out.println("You don't have any arrows left...");
                     }
-                }
+                }else System.out.println("Incorrect input. Try again!");
             } else if(inputCommand.equalsIgnoreCase("HINT")) {
                 showHint(map.getMap());
             } else if(inputCommand.equalsIgnoreCase("EXIT")){
@@ -60,21 +63,21 @@ public class Hunt {
         return success;
     }
 
-    public void showHint(Map map){
+    public void showHint(@NotNull Map map){
         int row = map.getHero().getCurrentRoom().getRow();
         int col = map.getHero().getCurrentRoom().getColumn();
         int limit = map.getSize()-1;
         if(map.getRoom(row == limit ? 0 : row+1,col).isHasEvent())
             map.getRoom(row == limit ? 0 : row+1,col).getEvent().message();
-        if(map.getRoom(row == 0 ? row-1 : limit,col).isHasEvent())
-            map.getRoom(row == 0 ? row - 1 : limit, col).getEvent().message();
+        if(map.getRoom(row == 0 ? limit : row-1,col).isHasEvent())
+            map.getRoom(row == 0 ? limit : row-1, col).getEvent().message();
         if(map.getRoom(row,col == limit ? 0 : col + 1).isHasEvent())
             map.getRoom(row,col == limit ? 0 : col + 1).getEvent().message();
         if(map.getRoom(row,col == 0 ? limit : col - 1).isHasEvent())
             map.getRoom(row,col == 0 ? limit : col - 1).getEvent().message();
     }
 
-    private void moveHero(Map map){
+    private void moveHero(@NotNull Map map){
         Room nextRoom = new Room();
         int row = map.getHero().getCurrentRoom().getRow();
         int col = map.getHero().getCurrentRoom().getColumn();
@@ -95,7 +98,7 @@ public class Hunt {
                     exit = true;
                 }
             }else if(nextRoom.getEvent().getClass() == Gold.class){
-                if(((Gold)nextRoom.getEvent()).isFound()) {
+                if(!((Gold)nextRoom.getEvent()).isFound()) {
                     nextRoom.getEvent().encounter();
                     map.getHero().setHasGold(true);
                     ((Escape)map.getEscapeRoom().getEvent()).setCanEscape(true);
@@ -118,7 +121,7 @@ public class Hunt {
         }
     }
 
-    public void shootArrow(Map map){
+    public void shootArrow(@NotNull Map map){
         map.getHero().setArrows(map.getHero().getArrows()-1);
         int row = map.getHero().getCurrentRoom().getRow();
         int col = map.getHero().getCurrentRoom().getColumn();
@@ -134,6 +137,8 @@ public class Hunt {
                 case 'S' -> nextRoom = map.getRoom(row == limit ? 0 : row + 1, col);
                 case 'N' -> nextRoom = map.getRoom(row == 0 ? limit : row - 1, col);
             }
+            row = nextRoom.getRow();
+            col = nextRoom.getColumn();
             if(nextRoom.isHasEvent()){
                 if(nextRoom.getEvent().getClass() == Wall.class)
                     shouldExit = true;
@@ -167,11 +172,12 @@ public class Hunt {
         }
     }
 
-    public void printMap(Map map){
+    public void printMap(@NotNull Map map){
         String toPrint = "";
         for(int r = 0; r<map.getSize(); r++){
+            toPrint="";
             for(int c = 0; c<map.getSize(); c++){
-                if(map.getRoom(r,c).equals(map.getHero().getCurrentRoom()))
+                if(map.getHero().getCurrentRoom().getRow() == r && map.getHero().getCurrentRoom().getColumn() == c)
                     toPrint += "H";
                 else if(map.getRoom(r,c).isHasEvent())
                     toPrint += map.getRoom(r,c).getEvent().print();

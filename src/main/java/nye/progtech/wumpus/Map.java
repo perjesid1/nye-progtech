@@ -5,7 +5,7 @@ public class Map {
         E,
         S,
         W,
-        N;
+        N
     }
     private int size;
     private int escapeRow;
@@ -15,6 +15,7 @@ public class Map {
     private Hero hero;
     public Map(int size, Hero hero) throws Exception{
         this.hero = hero;
+        this.size = size;
         this.escapeCol = hero.getCurrentRoom().getColumn();
         this.escapeRow = hero.getCurrentRoom().getRow();
         if(size < 6)
@@ -57,10 +58,6 @@ public class Map {
 
     public Room getEscapeRoom(){
         return this.rooms[this.escapeRow][this.escapeCol];
-    }
-
-    public void setSize(int size){
-        this.size = size;
     }
 
     public void setRoom(int row, int col, Room room){

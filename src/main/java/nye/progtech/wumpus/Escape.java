@@ -9,7 +9,7 @@ public class Escape extends Event{
     @Override
     public void encounter() {
         if(canEscape)
-            System.out.println("Hooray! You made it in one piece!");
+            System.out.println("Hooray! You made it in one piece!\nGood job!");
     }
 
     public boolean isCanEscape() {

@@ -14,7 +14,7 @@ public class Gold extends Event{
     @Override
     public void encounter() {
         if(!found) {
-            System.out.println("You fond what you came here for... Now get out!");
+            System.out.println("You found what you came here for... Now get out!");
             this.found = true;
         }
     }

@@ -42,6 +42,7 @@ public class UserSaveHandler extends SaveHandler{
         for (User user:this.allUsers) {
             usersWriter.write("[UserName]:" + user.getUserName() + ";[HighScore]:" + user.getHighScore());
         }
+        usersWriter.close();
     }
 
     public void loadAllUsers() throws IOException{
@@ -52,13 +53,14 @@ public class UserSaveHandler extends SaveHandler{
                 String loadedUser;
                 while (usersScanner.hasNext()) {
                     loadedUser = usersScanner.nextLine();
-                    this.allUsers.add(new User(loadedUser.substring(11, loadedUser.indexOf(";[HighScore]")), Integer.parseInt(loadedUser.substring(loadedUser.indexOf(";[HighScore]")))));
+                    this.allUsers.add(new User(loadedUser.substring(11, loadedUser.indexOf(";[HighScore]:")), Integer.parseInt(loadedUser.substring(loadedUser.indexOf(";[HighScore]:")+13))));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new IOException("Corrupted save file!");
             }
         }
+        usersScanner.close();
     }
 
     public Users getAllUsers() {

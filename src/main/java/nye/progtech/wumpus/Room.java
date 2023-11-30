@@ -51,13 +51,6 @@ public class Room {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Room room)) return false;
-        return getRow() == room.getRow() && getColumn() == room.getColumn() && isHasEvent() == room.isHasEvent() && Objects.equals(getEvent(), room.getEvent());
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hash(getRow(), getColumn(), isHasEvent(), getEvent());
     }

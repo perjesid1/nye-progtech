@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class MapSaveHandler extends SaveHandler{
     private Map handledMap;
 
+
     public MapSaveHandler(){
         super("currentMap");
         this.handledMap = null;
@@ -27,12 +28,12 @@ public class MapSaveHandler extends SaveHandler{
             try {
                 String firstRowData = mapScanner.nextLine();
                 int size = Integer.parseInt(firstRowData.split(" ")[0]);
-                char column = firstRowData.split(" ")[1].toCharArray()[0];
-                int row = Integer.parseInt(firstRowData.split(" ")[2]);
-                char direction = firstRowData.split(" ")[3].toCharArray()[0];
+                char column = firstRowData.split(" ")[1].toLowerCase().toCharArray()[0];
+                int row = Integer.parseInt(firstRowData.split(" ")[2])-1;
+                char direction = firstRowData.split(" ")[3].toUpperCase().toCharArray()[0];
                 int wumpusCount = 0;
                 int goldCount = 0;
-                Hero hero = new Hero(new Room(row, column - 'a' + 1));
+                Hero hero = new Hero(new Room(row, column - 'a'));
                 hero.setDirectionAsChar(direction);
                 handledMap = new Map(size, hero);
                 if(handledMap.getHero().getCurrentRoom().getColumn() > size-1 || handledMap.getHero().getCurrentRoom().getColumn() == 0)
@@ -59,6 +60,7 @@ public class MapSaveHandler extends SaveHandler{
                         }
                     }
                 }
+                this.handledMap.setRoom(row, column - 'a', new Room(row, column - 'a', new Escape()));
                 //Map validation.
                 if(size <= 8 && wumpusCount != 1){
                     throw new IOException("Invalid import file!");
@@ -69,7 +71,8 @@ public class MapSaveHandler extends SaveHandler{
                 } else if (goldCount != 1) {
                     throw new IOException("Invalid import file!");
                 }
-                handledMap.getHero().setArrows(wumpusCount);
+                this.handledMap.getHero().setArrows(wumpusCount);
+                mapScanner.close();
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -95,11 +98,12 @@ public class MapSaveHandler extends SaveHandler{
                 for(int i = 0; i < wumpusCount; i++){
                     wumpusAlive[i] = mapScanner.nextInt() == 1;
                 }
-                char[] mapData;
+                String mapData;
                 for(int i = 0; i<this.handledMap.getSize(); i++){
-                    mapData = mapScanner.nextLine().toCharArray();
+                    mapData = "";
+                    mapData = mapScanner.next();
                     for(int j = 0; j < this.handledMap.getSize(); j++){
-                        switch(mapData[j]){
+                        switch(mapData.toCharArray()[j]){
                             case '_' -> this.handledMap.setRoom(i,j,new Room(i,j));
                             case 'E' -> {
                                 this.handledMap.setRoom(i,j, new Room(i,j, new Escape()));
@@ -123,6 +127,7 @@ public class MapSaveHandler extends SaveHandler{
                         }
                     }
                 }
+                mapScanner.close();
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -141,33 +146,39 @@ public class MapSaveHandler extends SaveHandler{
         FileWriter mapWriter = new FileWriter(mapFile);
 
         //Hero's Data (static length)
-        mapWriter.write(this.handledMap.getHero().getDirectionAsChar());
-        mapWriter.write(this.handledMap.getHero().getCurrentRoom().getColumn());
-        mapWriter.write(this.handledMap.getHero().getCurrentRoom().getRow());
-        mapWriter.write(this.handledMap.getHero().getArrows());
-        if(this.handledMap.getHero().isHasGold())
-            mapWriter.write(1);
-        else
-            mapWriter.write(0);
-        mapWriter.write(this.handledMap.getSize());
-        mapWriter.write(this.handledMap.getWumpusCount());
+        mapWriter.write(this.handledMap.getHero().getDirectionAsChar()+"\n");
+        mapWriter.write(this.handledMap.getHero().getCurrentRoom().getRow()+"\n");
+        mapWriter.write(this.handledMap.getHero().getCurrentRoom().getColumn()+"\n");
+        mapWriter.write(this.handledMap.getHero().getArrows()+"\n");
+        if(this.handledMap.getHero().isHasGold()) {
+            mapWriter.write("1\n");
+        }
+        else{
+            mapWriter.write("0\n");
+        }
+        mapWriter.write(this.handledMap.getSize()+"\n");
+        mapWriter.write(String.valueOf(this.handledMap.getWumpusCount())+"\n");
         for(int r = 0; r < this.handledMap.getSize(); r++){
+            mapData[r]="";
             for(int c = 0; c <this.handledMap.getSize(); c++){
                 if(this.handledMap.getRoom(r,c).getEvent() == null)
                     mapData[r] += '_';
-                else
-                    mapData[r] += this.handledMap.getRoom(r,c).getEvent().print();
-                if(this.handledMap.getRoom(r,c).getEvent().print() == 'U')
-                {
-                    if(((Wumpus)this.handledMap.getRoom(r,c).getEvent()).isAlive())
-                        mapWriter.write(1);
-                    else
-                        mapWriter.write(0);
+                else {
+                    mapData[r] += this.handledMap.getRoom(r, c).getEvent().print();
+                    if (this.handledMap.getRoom(r, c).getEvent().print() == 'U') {
+                        if (((Wumpus) this.handledMap.getRoom(r, c).getEvent()).isAlive())
+                            mapWriter.write("1\n");
+                        else
+                            mapWriter.write("0\n");
+                    }
                 }
             }
+            mapData[r] += "\n";
         }
         for(int i = 0; i<this.handledMap.getSize(); i++)
             mapWriter.write(mapData[i]);
+
+        mapWriter.close();
     }
 
     public void setFileName(String fileName) {
