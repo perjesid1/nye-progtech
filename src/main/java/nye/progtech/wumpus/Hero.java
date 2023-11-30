@@ -57,14 +57,6 @@ public class Hero {
         return Objects.hash(isHasGold(), getArrows(), getCurrentRoom());
     }
 
-    public Map.directions getDirection(){
-        return this.direction;
-    }
-
-    public void setDirection(Map.directions direction){
-        this.direction = direction;
-    }
-
     public char getDirectionAsChar() {
         char dir = 'N'; //Just in case there is a problem, the default direction is North.
         switch (this.direction){

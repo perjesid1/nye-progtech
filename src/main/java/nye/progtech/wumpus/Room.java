@@ -42,21 +42,7 @@ public class Room {
         return hasEvent;
     }
 
-    public void setHasEvent(boolean hasEvent){
-        this.hasEvent = hasEvent;
-    }
-
     public Event getEvent(){
         return this.event;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getRow(), getColumn(), isHasEvent(), getEvent());
-    }
-
-    public void setEvent(Event event){
-        this.event = event;
-        this.hasEvent = event != null;
     }
 }

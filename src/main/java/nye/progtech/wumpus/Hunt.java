@@ -1,7 +1,5 @@
 package nye.progtech.wumpus;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Scanner;
 
 public class Hunt {
@@ -9,7 +7,7 @@ public class Hunt {
     public Hunt(String userName){ this.userName = userName; }
     private boolean success = false;
     private boolean exit = false;
-    public boolean run(@NotNull MapSaveHandler map){
+    public boolean run(MapSaveHandler map){
         Scanner scn = new Scanner(System.in);
         String inputCommand;
         do {
@@ -63,7 +61,7 @@ public class Hunt {
         return success;
     }
 
-    public void showHint(@NotNull Map map){
+    public void showHint(Map map){
         int row = map.getHero().getCurrentRoom().getRow();
         int col = map.getHero().getCurrentRoom().getColumn();
         int limit = map.getSize()-1;
@@ -77,7 +75,7 @@ public class Hunt {
             map.getRoom(row,col == 0 ? limit : col - 1).getEvent().message();
     }
 
-    private void moveHero(@NotNull Map map){
+    private void moveHero(Map map){
         Room nextRoom = new Room();
         int row = map.getHero().getCurrentRoom().getRow();
         int col = map.getHero().getCurrentRoom().getColumn();
@@ -121,7 +119,7 @@ public class Hunt {
         }
     }
 
-    public void shootArrow(@NotNull Map map){
+    public void shootArrow(Map map){
         map.getHero().setArrows(map.getHero().getArrows()-1);
         int row = map.getHero().getCurrentRoom().getRow();
         int col = map.getHero().getCurrentRoom().getColumn();
@@ -172,18 +170,19 @@ public class Hunt {
         }
     }
 
-    public void printMap(@NotNull Map map){
-        String toPrint = "";
+    public void printMap(Map map){
+        String toPrint;
         for(int r = 0; r<map.getSize(); r++){
-            toPrint="";
+            StringBuilder toPrintBuilder = new StringBuilder();
             for(int c = 0; c<map.getSize(); c++){
                 if(map.getHero().getCurrentRoom().getRow() == r && map.getHero().getCurrentRoom().getColumn() == c)
-                    toPrint += "H";
+                    toPrintBuilder.append("H");
                 else if(map.getRoom(r,c).isHasEvent())
-                    toPrint += map.getRoom(r,c).getEvent().print();
+                    toPrintBuilder.append(map.getRoom(r, c).getEvent().print());
                 else
-                    toPrint += '_';
+                    toPrintBuilder.append('_');
             }
+            toPrint = toPrintBuilder.toString();
             System.out.println(toPrint);
         }
     }
