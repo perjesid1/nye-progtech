@@ -20,21 +20,13 @@ public class Wumpus extends Event{
         if(alive)
             System.out.println("You feel a foul stench...");
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(isAlive());
-    }
-
     @Override
     public char print() {
         return 'U';
     }
-
     public void setAlive(boolean alive){
         this.alive = alive;
     }
-
     public boolean isAlive() {
         return alive;
     }

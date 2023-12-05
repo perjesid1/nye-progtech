@@ -34,17 +34,4 @@ public class User {
         if (!(o instanceof User user)) return false;
         return Objects.equals(getUserName(), user.getUserName());
     }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "userName='" + userName + '\'' +
-                ", highScore=" + highScore +
-                '}';
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getUserName());
-    }
 }

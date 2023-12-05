@@ -1,35 +1,58 @@
 package nye.progtech.wumpus;
-
-import java.util.Objects;
-
-public class Gold extends Event{
+/**
+ *
+ */
+public class Gold extends Event {
+    /**
+     *
+     */
     private boolean found;
-    public Gold(){
+    /**
+     *
+     */
+    public Gold() {
         this.found = false;
     }
 
-    public void setFound(boolean found){ this.found = found; }
-    public boolean isFound() { return this.found; }
-
+    /**
+     *
+     * @param newFound Value to set for found filed.
+     */
+    public void setFound(final boolean newFound) {
+        this.found = newFound;
+    }
+    /**
+     *
+     * @return value of the found field;
+     */
+    public boolean isFound() {
+        return this.found;
+    }
+    /**
+     *
+     */
     @Override
     public void encounter() {
-        if(!found) {
-            System.out.println("You found what you came here for... Now get out!");
+        if (!found) {
+            System.out.println("You found what you came here for... "
+                    + "Now get out!");
             this.found = true;
         }
     }
-
+    /**
+     *
+     */
     @Override
     public void message() {
-        if(!found)
-            System.out.println("You saw something glint in the corner of your eye...");
+        if (!found) {
+            System.out.println("You saw something glint in the corner"
+                    + " of your eye...");
+        }
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(found);
-    }
-
+    /**
+     *
+     * @return Character to print in the printMap function.
+     */
     @Override
     public char print() {
         return 'G';

@@ -1,13 +1,10 @@
 package nye.progtech.wumpus;
-
 import java.io.FileNotFoundException;
 import java.lang.Thread;
 import java.util.*;
-
 public class WumpusApp{
     UserSaveHandler users = new UserSaveHandler();
     MapSaveHandler map = new MapSaveHandler();
-
     public final void run(){
         clearConsole();
         greetThePlayer();
@@ -21,7 +18,6 @@ public class WumpusApp{
         catch(Exception e) {
             System.out.println("Unable to load users - corrupted save file.");
         }
-
         askForUser();
         try {
             users.saveAllUsers();

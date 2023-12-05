@@ -1,78 +1,113 @@
 package nye.progtech.wumpus;
-
-import java.util.Objects;
-
+/**
+ *
+ */
 public class Hero {
+    /**
+     *
+     */
     private boolean hasGold;
+    /**
+     *
+     */
     private int arrows;
-    Room currentRoom;
-
+    /**
+     *
+     */
+    private Room currentRoom;
+    /**
+     *
+     */
     private Map.directions direction;
-
-    public Hero(){
+    /**
+     *
+     */
+    public Hero() {
         this.hasGold = false;
         this.arrows = 0;
         this.currentRoom = null;
     }
-
-    public Hero(Room currentRoom){
+    /**
+     *
+     * @param newCurrentRoom Value to set the currentRoom field to.
+     */
+    public Hero(final Room newCurrentRoom) {
         this.hasGold = false;
         this.arrows = 0;
-        this.currentRoom = currentRoom;
+        this.currentRoom = newCurrentRoom;
     }
-
-    public int getArrows(){
+    /**
+     *
+     * @return Value of arrows field;
+     */
+    public int getArrows() {
         return this.arrows;
     }
-
-    public void setArrows(int arrows){
-        this.arrows = arrows;
+    /**
+     *
+     * @param newArrows Value to set the arrows field to.
+     */
+    public void setArrows(final int newArrows) {
+        this.arrows = newArrows;
     }
-
+    /**
+     *
+     * @return Value of hasGold field.
+     */
     public boolean isHasGold() {
         return this.hasGold;
     }
-
-    public void setHasGold(boolean hasGold){
-        this.hasGold = hasGold;
+    /**
+     *
+     * @param newHasGold Value to set the hasGold field to.
+     */
+    public void setHasGold(final boolean newHasGold) {
+        this.hasGold = newHasGold;
     }
-
+    /**
+     *
+     * @return Value of the currentRoom field.
+     */
     public Room getCurrentRoom() {
         return currentRoom;
     }
-
-    public void setCurrentRoom(Room currentRoom) {
-        this.currentRoom = currentRoom;
+    /**
+     *
+     * @param newCurrentRoom Value to set the currentRoom field of.
+     */
+    public void setCurrentRoom(final Room newCurrentRoom) {
+        this.currentRoom = newCurrentRoom;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Hero hero)) return false;
-        return isHasGold() == hero.isHasGold() && getArrows() == hero.getArrows() && Objects.equals(getCurrentRoom(), hero.getCurrentRoom());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(isHasGold(), getArrows(), getCurrentRoom());
-    }
-
+    /**
+     *
+     * @return Direction of the hero as a character.
+     */
     public char getDirectionAsChar() {
-        char dir = 'N'; //Just in case there is a problem, the default direction is North.
-        switch (this.direction){
-            case E -> dir = 'E';
-            case S -> dir = 'S';
-            case W -> dir = 'W';
+        switch (this.direction) {
+            case E -> {
+                return 'E';
+            }
+            case S -> {
+                return 'S';
+            }
+            case W -> {
+                return 'W';
+            }
+            default -> {
+                return 'N';
+            }
         }
-        return dir;
     }
-    public void setDirectionAsChar(char directionAsChar) {
-        Map.directions dir  = Map.directions.N; //Just in case there is a problem, the default direction is North.
-        switch (directionAsChar){
-            case 'E' -> dir = Map.directions.E;
-            case 'S' -> dir = Map.directions.S;
-            case 'W' -> dir = Map.directions.W;
+    /**
+     *
+     * @param directionAsChar Direction the hero is looking to.
+     */
+    public void setDirectionAsChar(final char directionAsChar) {
+        switch (directionAsChar) {
+            case 'E' -> this.direction = Map.directions.E;
+            case 'S' -> this.direction = Map.directions.S;
+            case 'W' -> this.direction = Map.directions.W;
+            default -> this.direction = Map.directions.N;
         }
-        this.direction = dir;
     }
 }

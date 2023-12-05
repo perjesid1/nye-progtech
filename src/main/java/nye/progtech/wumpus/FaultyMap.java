@@ -1,7 +1,13 @@
 package nye.progtech.wumpus;
-
-public class FaultyMap extends Exception{
-    public FaultyMap(String errorMessage) {
+/**
+ *
+ */
+public class FaultyMap extends Exception {
+    /**
+     *
+     * @param errorMessage errorMsg
+     */
+    public FaultyMap(final String errorMessage) {
         super(errorMessage);
     }
 }

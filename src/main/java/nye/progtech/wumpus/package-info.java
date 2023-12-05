@@ -1,0 +1,1 @@
+package nye.progtech.wumpus;
