@@ -1,1 +1,5 @@
+/**
+ *
+ */
 package nye.progtech.wumpus;
+

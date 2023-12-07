@@ -7,6 +7,22 @@ public class Hunt {
     /**
      *
      */
+    private static final int SMALL_MAP_SIZE = 8;
+    /**
+     *
+     */
+    private static final int BIG_MAP_SIZE = 15;
+    /**
+     *
+     */
+    private static final int MEDIUM_MAP_WUMPUS_COUNT = 2;
+    /**
+     *
+     */
+    private static final int BIG_MAP_WUMPUS_COUNT = 3;
+    /**
+     *
+     */
     private final String userName;
     /**
      *
@@ -101,20 +117,20 @@ public class Hunt {
      *
      * @param map Currently played map.
      */
-    public void showHint(Map map) {
+    public void showHint(final Map map) {
         int row = map.getHero().getCurrentRoom().getRow();
         int col = map.getHero().getCurrentRoom().getColumn();
-        int limit = map.getSize()-1;
-        if (map.getRoom(row == limit ? 0 : row+1,col).isHasEvent()) {
+        int limit = map.getSize() - 1;
+        if (map.getRoom(row == limit ? 0 : row + 1, col).isHasEvent()) {
             map.getRoom(row == limit ? 0 : row + 1, col).getEvent().message();
         }
-        if (map.getRoom(row == 0 ? limit : row-1,col).isHasEvent()) {
+        if (map.getRoom(row == 0 ? limit : row - 1, col).isHasEvent()) {
             map.getRoom(row == 0 ? limit : row - 1, col).getEvent().message();
         }
-        if (map.getRoom(row,col == limit ? 0 : col + 1).isHasEvent()) {
+        if (map.getRoom(row, col == limit ? 0 : col + 1).isHasEvent()) {
             map.getRoom(row, col == limit ? 0 : col + 1).getEvent().message();
         }
-        if (map.getRoom(row,col == 0 ? limit : col - 1).isHasEvent()) {
+        if (map.getRoom(row, col == 0 ? limit : col - 1).isHasEvent()) {
             map.getRoom(row, col == 0 ? limit : col - 1).getEvent().message();
         }
     }
@@ -123,34 +139,44 @@ public class Hunt {
      *
      * @param map Currently played map
      */
-    private void moveHero(Map map) {
-        Room nextRoom = new Room();
+    private void moveHero(final Map map) {
+        Room nextRoom;
         int row = map.getHero().getCurrentRoom().getRow();
         int col = map.getHero().getCurrentRoom().getColumn();
-        int limit = map.getSize()-1;
+        int limit = map.getSize() - 1;
+        int finalCoordinate;
 
         switch (map.getHero().getDirectionAsChar()) {
-            case 'W' -> nextRoom = map.getRoom(row, col == 0 ? limit : col - 1);
-            case 'E' -> nextRoom = map.getRoom(row, col == limit ? 0 : col + 1);
-            case 'S' -> nextRoom = map.getRoom(row == limit ? 0 : row + 1, col);
-            case 'N' -> nextRoom = map.getRoom(row == 0 ? limit : row - 1, col);
+            case 'W' -> {
+                nextRoom = map.getRoom(row, col == 0 ? limit : col - 1);
+            }
+            case 'E' -> {
+                nextRoom = map.getRoom(row, col == limit ? 0 : col + 1);
+            }
+            case 'S' -> {
+                nextRoom = map.getRoom(row == limit ? 0 : row + 1, col);
+            }
+            default -> {
+                nextRoom = map.getRoom(row == 0 ? limit : row - 1, col);
+            }
         }
         if (nextRoom.isHasEvent()) {
             if (nextRoom.getEvent().getClass() == Wall.class) {
                 nextRoom.getEvent().encounter();
             } else if (nextRoom.getEvent().getClass() == Wumpus.class) {
-                if (((Wumpus)nextRoom.getEvent()).isAlive()) {
+                if (((Wumpus) nextRoom.getEvent()).isAlive()) {
                     nextRoom.getEvent().encounter();
                     exit = true;
                 }
             } else if (nextRoom.getEvent().getClass() == Gold.class) {
-                if (!((Gold)nextRoom.getEvent()).isFound()) {
+                if (!((Gold) nextRoom.getEvent()).isFound()) {
                     nextRoom.getEvent().encounter();
                     map.getHero().setHasGold(true);
-                    ((Escape)map.getEscapeRoom().getEvent()).setCanEscape(true);
+                    ((Escape) map.getEscapeRoom().getEvent())
+                            .setCanEscape(true);
                 }
                 map.getHero().setCurrentRoom(nextRoom);
-            } else if (nextRoom.getEvent().getClass() == Pit.class){
+            } else if (nextRoom.getEvent().getClass() == Pit.class) {
                 nextRoom.getEvent().encounter();
                 exit = true;
             } else if (nextRoom.getEvent().getClass() == Escape.class) {
@@ -168,21 +194,33 @@ public class Hunt {
      *
      * @param map Currently played map.
      */
-    public void shootArrow(Map map) {
-        map.getHero().setArrows(map.getHero().getArrows()-1);
+    public void shootArrow(final Map map) {
+        map.getHero().setArrows(map.getHero().getArrows() - 1);
         int row = map.getHero().getCurrentRoom().getRow();
         int col = map.getHero().getCurrentRoom().getColumn();
         int limit = map.getSize();
-        Room nextRoom = new Room();
+        Room nextRoom;
         int originalWumpusCount = map.getWumpusCount();
         boolean shouldExit = false;
 
         do {
             switch (map.getHero().getDirectionAsChar()) {
-                case 'W' -> nextRoom = map.getRoom(row, col == 0 ? limit : col - 1);
-                case 'E' -> nextRoom = map.getRoom(row, col == limit ? 0 : col + 1);
-                case 'S' -> nextRoom = map.getRoom(row == limit ? 0 : row + 1, col);
-                case 'N' -> nextRoom = map.getRoom(row == 0 ? limit : row - 1, col);
+                case 'W' -> {
+                    nextRoom = map.getRoom(row,
+                            col == 0 ? limit : col - 1);
+                }
+                case 'E' -> {
+                    nextRoom = map.getRoom(row,
+                            col == limit ? 0 : col + 1);
+                }
+                case 'S' -> {
+                    nextRoom = map.getRoom(row == limit ? 0 : row + 1,
+                            col);
+                }
+                default -> {
+                    nextRoom = map.getRoom(row == 0 ? limit : row - 1,
+                            col);
+                }
             }
             row = nextRoom.getRow();
             col = nextRoom.getColumn();
@@ -190,8 +228,8 @@ public class Hunt {
                 if (nextRoom.getEvent().getClass() == Wall.class) {
                     shouldExit = true;
                 } else if (nextRoom.getEvent().getClass() == Wumpus.class) {
-                    ((Wumpus)nextRoom.getEvent()).setAlive(false);
-                    map.setWumpusCount(map.getWumpusCount()-1);
+                    ((Wumpus) nextRoom.getEvent()).setAlive(false);
+                    map.setWumpusCount(map.getWumpusCount() - 1);
                 } else if (nextRoom.equals(map.getHero().getCurrentRoom())) {
                     shouldExit = true;
                 }
@@ -199,24 +237,36 @@ public class Hunt {
         } while (!shouldExit);
 
         if (nextRoom.equals(map.getHero().getCurrentRoom())) {
-            System.out.println("You really are not smart, aren't you? You just killed yourself with your arrow...\nGAME OVER!");
+            System.out.println("You really are not smart, aren't you? "
+                    + "You just killed yourself with your arrow..."
+                    + "\nGAME OVER!");
             exit = true;
         } else {
             int difference = originalWumpusCount - map.getWumpusCount();
-            if (map.getSize() > 14 && difference == 3 || (map.getSize() >= 9 && map.getSize() <= 14 && difference == 2)) {
-                System.out.println("\"AAAAARGHHHH!\" You lucky bastard! You all of them with one shot!\nGood job!");
+            if (map.getSize() >= BIG_MAP_SIZE
+                    && difference == BIG_MAP_WUMPUS_COUNT
+                    || (map.getSize() > SMALL_MAP_SIZE
+                    && map.getSize() < BIG_MAP_SIZE
+                    && difference == MEDIUM_MAP_WUMPUS_COUNT)) {
+                System.out.println("\"AAAAARGHHHH!\" You lucky bastard! "
+                        + "You all of them with one shot!\nGood job!");
                 exit = true;
                 success = true;
-            } else if(difference != 0) {
+            } else if (difference != 0) {
                 if (map.getWumpusCount() == 0) {
-                    System.out.println("\"AAAAARGHHHH!\" You lucky bastard! You killed the last Wumpus!\nGood job!");
+                    System.out.println("\"AAAAARGHHHH!\" You lucky bastard! "
+                            + "You killed the last Wumpus!\nGood job!");
                     exit = true;
                     success = true;
                 } else {
-                    System.out.println("\"AAAAARGHHHH!\" You sure are lucky to hit anything in this pitch black environment...\nYou killed a Wumpus!");
+                    System.out.println("\"AAAAARGHHHH!\" "
+                            + "You sure are lucky to hit anything in "
+                            + "this pitch black environment..."
+                            + "\nYou killed a Wumpus!");
                 }
             } else {
-                System.out.println("No luck this time... The only thing the arrow hit is a wall.");
+                System.out.println("No luck this time... "
+                        + "The only thing the arrow hit is a wall.");
             }
         }
     }
@@ -224,15 +274,17 @@ public class Hunt {
      *
      * @param map Currently played map.
      */
-    public void printMap(Map map) {
+    public void printMap(final Map map) {
         String toPrint;
-        for (int r = 0; r<map.getSize(); r++) {
+        for (int r = 0; r < map.getSize(); r++) {
             StringBuilder toPrintBuilder = new StringBuilder();
-            for (int c = 0; c<map.getSize(); c++) {
-                if (map.getHero().getCurrentRoom().getRow() == r && map.getHero().getCurrentRoom().getColumn() == c) {
+            for (int c = 0; c < map.getSize(); c++) {
+                if (map.getHero().getCurrentRoom().getRow() == r
+                        && map.getHero().getCurrentRoom().getColumn() == c) {
                     toPrintBuilder.append("H");
-                } else if (map.getRoom(r,c).isHasEvent()) {
-                    toPrintBuilder.append(map.getRoom(r, c).getEvent().print());
+                } else if (map.getRoom(r, c).isHasEvent()) {
+                    toPrintBuilder.append(map.getRoom(r, c)
+                            .getEvent().print());
                 } else {
                     toPrintBuilder.append('_');
                 }

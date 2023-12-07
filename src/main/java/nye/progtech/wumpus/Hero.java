@@ -18,7 +18,7 @@ public class Hero {
     /**
      *
      */
-    private Map.directions direction;
+    private Map.DIRECTIONS direction;
     /**
      *
      */
@@ -104,10 +104,18 @@ public class Hero {
      */
     public void setDirectionAsChar(final char directionAsChar) {
         switch (directionAsChar) {
-            case 'E' -> this.direction = Map.directions.E;
-            case 'S' -> this.direction = Map.directions.S;
-            case 'W' -> this.direction = Map.directions.W;
-            default -> this.direction = Map.directions.N;
+            case 'E' -> {
+                this.direction = Map.DIRECTIONS.E;
+            }
+            case 'S' -> {
+                this.direction = Map.DIRECTIONS.S;
+            }
+            case 'W' -> {
+                this.direction = Map.DIRECTIONS.W;
+            }
+            default -> {
+                this.direction = Map.DIRECTIONS.N;
+            }
         }
     }
 }

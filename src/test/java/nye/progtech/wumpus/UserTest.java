@@ -47,6 +47,7 @@ class UserTest {
         User testUser1 = new User(randomInt2 + "-" + randomInt1);
         User testUser2 = new User(randomInt2 + "-" + randomInt1);
         assertEquals(testUser2, testUser1);
+        assertEquals(testUser2.hashCode(), testUser1.hashCode());
     }
     @Test
     void givenUsersAreCompared_whenUsernameIsDifferent_thenTheyShouldNotBeEqual(){
@@ -56,6 +57,7 @@ class UserTest {
         User testUser1 = new User(randomInt2 + "-" + randomInt1);
         User testUser2 = new User(randomInt1 + "-" + randomInt2);
         assertNotEquals(testUser2, testUser1);
+        assertNotEquals(testUser2.hashCode(), testUser1.hashCode());
     }
     @Test
     void givenUsersAreCompared_whenTheTwoObjectsAreTheSame_thenTheyShouldBeEqual(){

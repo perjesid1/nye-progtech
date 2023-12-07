@@ -1,9 +1,14 @@
 package nye.progtech.wumpus;
-
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
-public class Main {
-    public static void main(String[] args) {
+/**
+ *
+ */
+public final class Main {
+    private Main() { }
+    /**
+     *
+     * @param args Input Parameters.
+     */
+    public static void main(final String[] args) {
         var app = new WumpusApp();
         app.run();
     }
